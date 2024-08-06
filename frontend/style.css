@@ -398,10 +398,6 @@ ol {
   border-radius: 10px;
 }
 
-.doctor-card img {
-  margin-top: 15px;
-}
-
 #serach-box {
   padding: 10px;
 }
@@ -454,9 +450,77 @@ ol {
   text-align: center;
 }
 
-.doctor-card img{
+.doctor-card img {
+  margin-top: 15px;
   width: 100px;
   height: 100px;
+}
+
+.dropdown-menu li {
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #d3d0d0;
+}
+
+#no-data {
+  color: #007e85;
+  font-family: DM Sans;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 46px;
+  text-align: center;
+  display: none;
+}
+
+#no-data h2 {
+  margin-top: 4.5rem;
+  color: #007e85;
+}
+
+/*---------------------
+  Reviews section
+-----------------------*/
+.reviews {
+  margin-top: 80px;
+}
+.reviews-card {
+  box-shadow: 4px 4px 8px #00000040;
+  margin-top: 40px;
+  border-radius: 10px;
+}
+
+.reviews-card h4 {
+  color: #007e85;
+  font-family: DM Sans;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 38px;
+}
+
+.reviews-card h6 {
+  color: #333333;
+  font-family: DM Sans;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0.1em;
+}
+
+.reviews-card img {
+  margin-top: 15px;
+  width: 90px;
+  height: 90px;
+}
+
+.review-title {
+  color: #333333;
+  font-family: DM Sans;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: left;
 }
 /*---------------------
   Footer
@@ -465,6 +529,7 @@ ol {
 .footer {
   background: #121c1d;
   padding-top: 40px;
+  margin-top: 120px;
 }
 
 .footer__top {

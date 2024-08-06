@@ -32,15 +32,21 @@ const loadServices = async () => {
 }
 
 const loadDoctors = async (search) => {
+    console.log(search);
+
     try {
-        const response = await fetch(`https://test-thto.onrender.com/doctor/list/?search=${search?search:""}`)
+        const response = await fetch(`https://test-thto.onrender.com/doctor/list/?search=${search ? search : ""}`)
         const data = await response.json()
         const parent = document.getElementById('doctors-container')
         parent.innerHTML = ''
-        data.results.forEach(doctor => {
-            let div = document.createElement('div')
-            div.classList.add("col-md-4", "mb-5", "mb-md-0", "d-flex", "align-items-stretch")
-            div.innerHTML = `
+        const no_data = document.getElementById('no-data')
+
+        if (data.results.length > 0) {
+            no_data.style.display = 'none'
+            data.results.forEach(doctor => {
+                let div = document.createElement('div')
+                div.classList.add("col-md-4", "mb-5", "mb-md-0", "d-flex", "align-items-stretch")
+                div.innerHTML = `
             <div class="card doctor-card">
                 <div class="card-up" style="background-color: #9d789b;"></div>
                 <div class="avatar mx-auto bg-white">
@@ -58,8 +64,12 @@ const loadDoctors = async (search) => {
             </div>
             
             `
-            parent.appendChild(div)
-        })
+                parent.appendChild(div)
+            })
+
+        } else {
+            no_data.style.display = 'block'
+        }
 
     } catch (error) {
         console.log(error);
@@ -74,7 +84,7 @@ const loadDesignation = async () => {
     data.forEach(item => {
         const li = document.createElement('li')
         li.classList.add('dropdown-item')
-        li.innerText = item.name
+        li.innerHTML = `<li onclick="loadDoctors('${item.name}')">${item.name}</li>`
 
         parent.appendChild(li)
     });
@@ -88,7 +98,7 @@ const loadSpecialization = async () => {
     data.forEach(item => {
         const li = document.createElement('li')
         li.classList.add('dropdown-item')
-        li.innerText = item.name
+        li.innerHTML = `<li onclick="loadDoctors('${item.name}')">${item.name}</li>`
 
         parent.appendChild(li)
     });
@@ -101,12 +111,51 @@ const serachDoctor = async () => {
     })
 }
 
+const loadReviews = async()=>{
+
+    const response = await fetch('https://testing-8az5.onrender.com/doctor/review/')
+    const data = await response.json()
+    const parent  = document.getElementById('reviews-container')
+
+    data.forEach(review => {
+        let li = document.createElement('li')
+        li.innerHTML = `
+            <div class="card border-0 reviews-card">
+                <div class="card-up" style="background-color: #9d789b;"></div>
+                <div class="row p-2 align-items-center">
+                  <div class="col-md-4 avatar bg-white">
+                    <img src="img/reviewer.png" class="rounded-circle" />
+                  </div>
+
+                  <div class="col-md-8 ">
+                    <h4 class="mb-2">${review.reviewer}</h4>
+                    <h6>${review.rating}</h6>
+                  </div>
+
+                </div>
+
+                <div class="card-body">
+                  <hr />
+                  <h5 class="review-title">“An amazing service”</h5>
+                  <p class="dark-grey-text mt-3">
+                    <i class="fas fa-quote-left pe-2"></i>Lorem ipsum dolor sit ametolil col consectetur adipiscing
+                    lectus a nunc mauris scelerisque sed egestas.
+                  </p>
+                </div>
+              </div>
+              `
+
+              parent.appendChild(li)
+    });
+}
+
 async function main() {
     await loadServices()
     await loadDesignation()
     await loadSpecialization()
     await serachDoctor()
     await loadDoctors()
+    await loadReviews()
 }
 
 main()
