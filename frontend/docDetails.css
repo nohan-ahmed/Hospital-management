@@ -1,0 +1,78 @@
+.doc-container {
+  padding: 23px;
+  background: white;
+  border-radius: 10px;
+}
+
+.doc-info img {
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+}
+.sp-btn {
+  color: #ffff;
+  font-size: 13px;
+  padding: 8px;
+  margin: 0;
+  border: 0px;
+  border-radius: 6px;
+  background: linear-gradient(45deg, #007e85, #61129d);
+}
+
+.doc-text h2 {
+  color: #007e85;
+  font-family: DM Sans;
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 38px;
+  text-align: left;
+}
+
+.doc-text h5 {
+  color: #333333;
+  font-family: DM Sans;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0.1em;
+  text-align: left;
+  margin-top: 12px;
+}
+.doc-text h4 {
+  color: #007e85;
+  font-family: DM Sans;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 38px;
+  text-align: left;
+}
+
+.doc-text p {
+  margin-top: 15px;
+  color: #555555;
+  font-family: DM Sans;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: left;
+}
+
+.appointment {
+  color: #ffffff;
+  background-color: #007e85;
+  font-family: DM Sans;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 38px;
+  text-align: left;
+}
+
+.reviews h2 {
+  font-family: DM Sans;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin-bottom:20px ;
+}

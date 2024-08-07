@@ -47,22 +47,23 @@ const loadDoctors = async (search) => {
                 let div = document.createElement('div')
                 div.classList.add("col-md-4", "mb-5", "mb-md-0", "d-flex", "align-items-stretch")
                 div.innerHTML = `
-            <div class="card doctor-card">
-                <div class="card-up" style="background-color: #9d789b;"></div>
-                <div class="avatar mx-auto bg-white">
-                  <img src="${doctor.image}" class="rounded-circle" />
+            <a href="docDetails.html?doctorId=${doctor.id}">
+                <div class="card doctor-card">
+                    <div class="card-up" style="background-color: #9d789b;"></div>
+                    <div class="avatar mx-auto bg-white">
+                    <img src="${doctor.image}" class="rounded-circle" />
+                    </div>
+                    <div class="card-body ">
+                    <h4 class="mb-2">${doctor.full_name}</h4>
+                    <h6 class="mb-4">${doctor.designation[0]}</h6>
+                    <hr />
+                    <p class="dark-grey-text mt-4">
+                        <i class="fas fa-quote-left pe-2"></i>Lorem ipsum dolor sit amet eos adipisci,
+                        consectetur adipisicing elit.
+                    </p>
+                    </div>
                 </div>
-                <div class="card-body ">
-                  <h4 class="mb-2">${doctor.full_name}</h4>
-                  <h6 class="mb-4">${doctor.designation[0]}</h6>
-                  <hr />
-                  <p class="dark-grey-text mt-4">
-                    <i class="fas fa-quote-left pe-2"></i>Lorem ipsum dolor sit amet eos adipisci,
-                    consectetur adipisicing elit.
-                  </p>
-                </div>
-            </div>
-            
+            </a>
             `
                 parent.appendChild(div)
             })
