@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Pateint
+from .models import Patient
 
 
 # Register your models here.
-@admin.register(Pateint)
+@admin.register(Patient)
 class PateintAdmin(admin.ModelAdmin):
     list_display = ["id", "user", "first_name", "last_name", "phone"]
     search_fields = ["id", "user", "phone"]

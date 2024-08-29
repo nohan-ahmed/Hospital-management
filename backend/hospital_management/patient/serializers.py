@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Pateint
+from .models import Patient
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.exceptions import ValidationError
@@ -7,9 +7,18 @@ from rest_framework.exceptions import ValidationError
 class PateintSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
     class Meta:
-        model = Pateint
+        model = Patient
         fields = "__all__"
-
+        
+    def create(self, validated_data):
+        # Create a Patient instance without a user assigned yet
+        patient = Patient(**validated_data) 
+        # Assign the currently authenticated user
+        patient.user = self.context.get('request').user  
+        # Save the Patient instance to the database
+        patient.save()
+        return patient
+    
 class RegistrationSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(style={'input_type': 'password'}, write_only=True,  required=True)
 
@@ -46,7 +55,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         return user
 
-
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=50)
     password = serializers.CharField(style={'input_type':'password'})
+
+class LogoutSerializer(serializers.Serializer):
+    refresh_token = serializers.CharField(max_length=250)
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name', 'email',]
+        

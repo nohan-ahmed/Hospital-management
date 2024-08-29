@@ -3,14 +3,15 @@ from .models import Doctor, AvailableTime, Designation, Specialisation, Review
 
 
 class DoctorSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField()
-    designation = serializers.StringRelatedField(many=True)
-    specialisation = serializers.StringRelatedField(many=True)
-    available_time = serializers.StringRelatedField(many=True)
+    # user = serializers.StringRelatedField()
+    # designation = serializers.StringRelatedField(many=True)
+    # specialisation = serializers.StringRelatedField(many=True)
+    # available_time = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Doctor
         fields = "__all__"
+        extra_kwargs = {'user':{'read_only':True}}
 
 
 class DesignationSerializer(serializers.ModelSerializer):

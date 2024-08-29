@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'doctor',
     # default application
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'django_filters',
     'rest_framework',
     'django.contrib.admin',
@@ -154,7 +155,12 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "100/minute",
+        "user": "100/minute",
+        "PateintView": "1000/hour",
+        "Auth": "100/day",
+    },
 }
 
 

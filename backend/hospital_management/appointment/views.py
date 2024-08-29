@@ -1,5 +1,7 @@
-from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.throttling import UserRateThrottle
+from rest_framework.permissions import IsAuthenticated
+from hospital_management.paginations import StandardResultsSetPagination
 from . models import Appointment
 from .serializers import AppointmentSerializer
 # Create your views here.
@@ -7,7 +9,9 @@ from .serializers import AppointmentSerializer
 class AppointmentAPIView(ModelViewSet):
     queryset= Appointment.objects.all()
     serializer_class = AppointmentSerializer
-
+    throttle_classes = (UserRateThrottle,)
+    permission_classes = [IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
     # You can customize your queryset using get_queryset(self) method.
     def get_queryset(self): 
         queryset= super().get_queryset()
@@ -35,4 +39,4 @@ class AppointmentAPIView(ModelViewSet):
         Setting the pateint: By calling serializer.save(author=self.request.user.pateint), you automatically set the author field to the currently authenticated user when a post is created.
         This ensures that the pateint is set correctly and prevents users from tampering with the field.
         """
-        serializer.save(pateint=self.request.user.pateint)
+        serializer.save(patient=self.request.user.patient)
