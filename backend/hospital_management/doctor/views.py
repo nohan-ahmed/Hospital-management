@@ -30,8 +30,7 @@ class AvailableTimeViewSet(viewsets.ModelViewSet):
     queryset = AvailableTime.objects.all()
     serializer_class = serializers.AvailableTimeSerializer
     permission_classes = [IsAdminUserOrReadOnly]
-    
-    
+     
 class DesignationViewSet(viewsets.ModelViewSet):
     queryset = Designation.objects.all()
     serializer_class = serializers.DesignationSerializer
@@ -41,7 +40,7 @@ class SpecialisationViewSet(viewsets.ModelViewSet):
     queryset = Specialisation.objects.all()
     serializer_class = serializers.SpecialisationSerializer
     permission_classes = [IsAdminUserOrReadOnly]
-    
+
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = serializers.ReviewSerializer
