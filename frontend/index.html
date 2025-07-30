@@ -17,6 +17,7 @@
 
 <body>
 
+
   <!-- Header Section Begin -->
   <header class="header">
     <nav class="header__top">
@@ -34,18 +35,23 @@
                   <li class="active"><a href="./index.html">Home</a></li>
                   <li><a href="./services.html">Services</a></li>
                   <li><a href="./contact.html">Contact Us</a></li>
-                  <li><a href="./register.html" class="singup">Sing Up</a></li>
-                  <a href="./login.html" class="btn primary-btn">Login</a>
-                  <li>
+                  
+                  <!-- Login/Register nav: show only if NOT logged in -->
+                  <li id="nav-login-register">
+                    <a href="./register.html" class="singup">Sign Up</a>
+                    <a href="./login.html" class="btn primary-btn ms-2">Login</a>
+                  </li>
+                  
+                  <!-- Profile nav: show only if logged in -->
+                  <li id="nav-profile" style="display:none;">
                     <div class="dropdown-center">
                       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
+                        aria-expanded="false" id="profile-btn">
                         Profile
                       </button>
                       <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Action two</a></li>
-                        <li><a class="dropdown-item" href="#">Action three</a></li>
+                        <li><a class="dropdown-item" href="#">My Profile</a></li>
+                        <li><a class="dropdown-item" href="#" id="logout-btn">Logout</a></li>
                       </ul>
                     </div>
                   </li>
@@ -290,6 +296,37 @@
   <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous"
     defer></script>
 
+     <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem('access');  // use your token key here
+
+      const loginRegisterElem = document.getElementById('nav-login-register');
+      const profileElem = document.getElementById('nav-profile');
+      const profileBtn = document.getElementById('profile-btn');
+
+      if (token) {
+        loginRegisterElem.style.display = 'none';
+        profileElem.style.display = 'block';
+
+        // Optional: display username if saved in localStorage
+        const username = localStorage.getItem('username') || 'Profile';
+        profileBtn.textContent = username;
+      } else {
+        loginRegisterElem.style.display = 'block';
+        profileElem.style.display = 'none';
+      }
+
+      // Logout
+      document.getElementById('logout-btn').addEventListener('click', e => {
+        e.preventDefault();
+        localStorage.removeItem('access');
+        localStorage.removeItem('refresh');
+        localStorage.removeItem('username');
+        localStorage.removeItem('user_id');
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
   <script src="app.js"></script>
 </body>
 
