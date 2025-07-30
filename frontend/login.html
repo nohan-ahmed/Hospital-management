@@ -20,30 +20,30 @@
 
     <!-- Header Section Begin -->
     <header class="header">
-        <nav class="header__top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-2">
-                        <div class="header__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+            <nav class="header__top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="header__logo">
+                                <a href="./index.html"><img src="img/logo.png" alt="Logo"></a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-10">
-                        <div class="header__menu__option">
-                            <nav class="header__menu">
-                                <ul>
-                                    <li class="active"><a href="./index.html">Home</a></li>
-                                    <li><a href="./services.html">Services</a></li>
-                                    <li><a href="./contact.html">Contact Us</a></li>
-                                    <li><a href="./register.html" class="singup">Sing Up</a></li>
-                                    <a href="./login.html" class="btn primary-btn">Login</a>
-                                </ul>
-                            </nav>
+                        <div class="col-lg-10">
+                            <div class="header__menu__option">
+                                <nav class="header__menu">
+                                    <ul>
+                                        <li class="active"><a href="./index.html">Home</a></li>
+                                        <li><a href="./services.html">Services</a></li>
+                                        <li><a href="./contact.html">Contact Us</a></li>
+                                        <li id="auth-links"></li>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+
     </header>
     <!-- Header Section End -->
 
@@ -229,6 +229,36 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous"
         defer></script>
+
+        <script>
+    function renderAuthNav() {
+        const authLinks = document.getElementById("auth-links");
+        const accessToken = localStorage.getItem("access");
+
+        if (accessToken) {
+            authLinks.innerHTML = `
+                <li><a href="./profile.html">Profile</a></li>
+                <li><button class="btn btn-sm btn-danger" onclick="logoutUser()">Logout</button></li>
+            `;
+        } else {
+            authLinks.innerHTML = `
+                <li><a href="./register.html" class="singup">Sign Up</a></li>
+                <li><a href="./login.html" class="btn primary-btn">Login</a></li>
+            `;
+        }
+    }
+
+    function logoutUser() {
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
+        localStorage.removeItem("user_id");
+        alert("Logged out successfully!");
+        window.location.href = "index.html";
+    }
+
+    renderAuthNav();
+</script>
+
     <script src="./login.js"></script>
 </body>
 

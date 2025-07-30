@@ -35,8 +35,18 @@
                   <li class="active"><a href="./index.html">Home</a></li>
                   <li><a href="./services.html">Services</a></li>
                   <li><a href="./contact.html">Contact Us</a></li>
-                  <li><a href="./register.html" class="singup">Sing Up</a></li>
-                  <a href="./login.html" class="btn primary-btn">Login</a>
+
+                  <!-- Login/Register section -->
+                  <span id="nav-login-register">
+                    <li><a href="./register.html" class="singup">Sign Up</a></li>
+                    <li><a href="./login.html" class="btn primary-btn">Login</a></li>
+                  </span>
+
+                  <!-- Profile section (only visible if logged in) -->
+                  <span id="nav-profile" style="display: none;">
+                    <li><a href="#" id="profile-btn" class="btn btn-info me-2">Profile</a></li>
+                    <li><a href="#" id="logout-btn" class="btn btn-danger">Logout</a></li>
+                  </span>
                 </ul>
               </nav>
             </div>
@@ -218,6 +228,39 @@
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous"
     defer></script>
+
+        <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("access"); // use your token key here
+
+        const loginRegisterElem = document.getElementById("nav-login-register");
+        const profileElem = document.getElementById("nav-profile");
+        const profileBtn = document.getElementById("profile-btn");
+
+        if (token) {
+          loginRegisterElem.style.display = "none";
+          profileElem.style.display = "block";
+
+          // Optional: display username if saved in localStorage
+          const username = localStorage.getItem("username") || "Profile";
+          profileBtn.textContent = username;
+        } else {
+          loginRegisterElem.style.display = "block";
+          profileElem.style.display = "none";
+        }
+
+        // Logout
+        document.getElementById("logout-btn").addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.removeItem("access");
+          localStorage.removeItem("refresh");
+          localStorage.removeItem("username");
+          localStorage.removeItem("user_id");
+          window.location.href = "login.html";
+        });
+      });
+    </script>
+
   <script src="docDetails.js"></script>
 </body>
 
