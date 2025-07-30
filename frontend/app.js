@@ -33,11 +33,11 @@ const loadServices = async () => {
     }
 };
 
-const loadDoctors = async (searchQuery = '') => {
-    console.log("http://127.0.0.1:8000/doctors/?search=:", searchQuery);
+const loadDoctors = async (id, cat = '') => {
+    console.log("http://127.0.0.1:8000/doctors/?search=:", cat, id);
 
     try {
-        const url = `http://127.0.0.1:8000/doctors/?search=${searchQuery}`;
+        const url = `http://127.0.0.1:8000/doctors/?${cat}=${id}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error(`Failed to load doctors. Status: ${response.status}`);
 
@@ -99,7 +99,7 @@ const loadDesignation = async () => {
         data.forEach(item => {
             const li = document.createElement('li');
             li.classList.add('dropdown-item');
-            li.innerHTML = `<li onclick="loadDoctors('${item.name}')">${item.name}</li>`;
+            li.innerHTML = `<li onclick="loadDoctors('${item.id}', 'designation')">${item.name}</li>`;
             parent.appendChild(li);
         });
     } catch (error) {
@@ -116,7 +116,9 @@ const loadSpecialization = async () => {
         data.forEach(item => {
             const li = document.createElement('li');
             li.classList.add('dropdown-item');
-            li.innerHTML = `<li onclick="loadDoctors('${item.name}')">${item.name}</li>`;
+
+            li.innerHTML = `<li onclick='loadDoctors(${item.id}, "${'specialisation'}")'>${item.name}</li>`;
+
             parent.appendChild(li);
         });
     } catch (error) {

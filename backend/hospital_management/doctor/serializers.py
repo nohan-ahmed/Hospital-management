@@ -3,15 +3,28 @@ from .models import Doctor, AvailableTime, Designation, Specialisation, Review
 
 
 class DoctorSerializer(serializers.ModelSerializer):
-    # user = serializers.StringRelatedField()
-    # designation = serializers.StringRelatedField(many=True)
-    # specialisation = serializers.StringRelatedField(many=True)
-    # available_time = serializers.StringRelatedField(many=True)
+    user = serializers.SerializerMethodField()
+    designation = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
+    specialisation = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
+
 
     class Meta:
         model = Doctor
-        fields = "__all__"
-        extra_kwargs = {'user':{'read_only':True}}
+        fields = [
+            'id', 'user', 'profile', 'designation',
+            'specialisation', 'available_time', 'fee', 'meet_link'
+        ]
+
+    def get_user(self, obj):
+        return f"{obj.user.first_name} {obj.user.last_name}"
 
 
 class DesignationSerializer(serializers.ModelSerializer):
@@ -30,6 +43,9 @@ class AvailableTimeSerializer(serializers.ModelSerializer):
         fields ='__all__'
         
 class ReviewSerializer(serializers.ModelSerializer):
+    reviewer = serializers.CharField(source='reviwer.user.first_name', read_only=True)
+    doctor_name = serializers.CharField(source='doctor.user.first_name', read_only=True)
+
     class Meta:
         model = Review
-        fields ='__all__'
+        fields = ['id', 'reviewer', 'doctor_name', 'rating', 'body', 'created_on']

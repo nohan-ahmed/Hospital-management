@@ -4,7 +4,7 @@ from .models import Appointment
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ['id','doctor', 'patient','appointment_type','appointment_status','time','cancel']
+    list_display = ['id','doctor', 'patient__user__username','appointment_type','appointment_status','time','cancel']
     
     def doctor(self, obj):
         return obj.doctor

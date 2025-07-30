@@ -2,6 +2,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.filters import SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from . import serializers
 from .models import Doctor, AvailableTime, Designation, Specialisation, Review
 from rest_framework.throttling import UserRateThrottle
@@ -15,6 +17,9 @@ class DoctorViewSet(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrReadOnly]
     throttle_classes = [UserRateThrottle]
     pagination_class = StandardResultsSetPagination
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['specialisation', 'designation', 'specialisation', 'fee', 'available_time']
+
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -30,6 +35,8 @@ class AvailableTimeViewSet(viewsets.ModelViewSet):
     queryset = AvailableTime.objects.all()
     serializer_class = serializers.AvailableTimeSerializer
     permission_classes = [IsAdminUserOrReadOnly]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id']
      
 class DesignationViewSet(viewsets.ModelViewSet):
     queryset = Designation.objects.all()
@@ -46,3 +53,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ReviewSerializer
     permission_classes = [IsOwnerOrReadOnly]
     pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['doctor', 'reviwer', 'rating']
+    search_fields = ['doctor', 'reviwer']

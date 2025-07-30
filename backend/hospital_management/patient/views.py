@@ -87,6 +87,8 @@ class VerityEmailAPIView(APIView):
         if user is not None and default_token_generator.check_token(user, token):
             user.is_active = True
             user.save()
+            # create paint account
+            Patient.objects.create(user=user)
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(

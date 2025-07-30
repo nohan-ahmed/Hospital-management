@@ -34,3 +34,5 @@ class ReviewAdmin(admin.ModelAdmin):
     
     def reviwer(self, obj):
         return obj.reviwer
+    
+

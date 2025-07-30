@@ -40,7 +40,7 @@ const loadReviews = async () => {
                 <div class="row p-2 align-items-center">
                     <div class="col">
                         <img src="img/reviewer.png" class="rounded-circle" />
-                        <h4 class="mb-2">${review.reviewer}</h4>
+                        <h4 class="mb-2">${review.reviwer || "Anonymous"}</h4>
                         <h6>${review.rating}</h6>
                     </div>
                 </div>
@@ -48,13 +48,19 @@ const loadReviews = async () => {
                     <hr />
                     <h5 class="review-title">“An amazing service”</h5>
                     <p class="dark-grey-text mt-3 text-start">
-                        <i class="fas fa-quote-left pe-2"></i>${review.body.slice(0, 105)}...
+                        <i class="fas fa-quote-left pe-2"></i>${review.body?.slice(0, 105)}...
                     </p>
                 </div>
             </div>
         `;
         parent.appendChild(li);
     });
+};
+
+const getTimes = async (id) => {
+    const res = await fetch(`http://127.0.0.1:8000/available-time/?id=${id}`);
+    const data = await res.json();
+    return data[0]; // Assuming each request returns an array with one item
 };
 
 const loadTime = async () => {
@@ -64,14 +70,17 @@ const loadTime = async () => {
     const parent = document.getElementById('select_time');
     parent.innerHTML = '<option disabled selected>Select Time</option>';
 
-    // Ensure available_time exists and is iterable
-    (data.available_time || []).forEach(time => {
+    const timeList = data.available_time || [];
+    for (const timeId of timeList) {
+        const timeObj = await getTimes(timeId);
         const option = document.createElement('option');
-        option.value = time
-        option.innerText = time;
+        option.value = timeId;
+        console.log(timeId, "____");
+        option.innerText = timeObj.time;
         parent.appendChild(option);
-    });
+    }
 };
+
 const appointment = async () => {
     document.getElementById('submite-appointment').addEventListener('click', async () => {
         const status = document.getElementsByName("status");
@@ -84,6 +93,11 @@ const appointment = async () => {
 
         if (!token) {
             alert("Please log in first.");
+            return;
+        }
+
+        if (!selectedTime || !selectedTime.value) {
+            alert("Please select a time slot.");
             return;
         }
 
@@ -110,8 +124,9 @@ const appointment = async () => {
 
         if (res.ok) {
             alert("Appointment submitted successfully!");
+            location.reload();
         } else {
-            alert("Failed to submit appointment. See console for details.");
+            alert("Failed to submit appointment. Check form inputs.");
         }
     });
 };
