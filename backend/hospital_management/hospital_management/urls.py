@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from patient.views import UsersAPIView
+from user_profile.views import UserListView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('contacts/', include('contact_us.urls')),
@@ -26,7 +26,8 @@ urlpatterns = [
     path('', include('doctor.urls')),
     path('patients/', include('patient.urls')),
     path('appointments/', include('appointment.urls')),
-    path('api/all-users/', UsersAPIView.as_view(), name='all_users'),
+    path('api/all-users/', UserListView.as_view(), name='all_users'),
+    path('api/user/', include('user_profile.urls')),
 ]
 
 if settings.DEBUG:

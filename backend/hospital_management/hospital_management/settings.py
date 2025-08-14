@@ -14,7 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 import environ
 import os
-
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,9 +32,17 @@ SECRET_KEY = 'django-insecure-jgzy6bsqerg%7zd8k)^b_nqq0i&9ogoqkwxci5&_gm%#x32h=$
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://hospital-management-gp1l.onrender.com']
+# SECURE_SSL_REDIRECT = True  # Optional
 
-ALLOWED_HOSTS = []
-
+# Don't use wildcard when credentials are included
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",  # local dev frontend
+    "https://your-frontend.com"  # production frontend
+]
+# Allow cookies / Authorization headers in cross-site requests
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -57,20 +65,25 @@ INSTALLED_APPS = [
     'service',
     'patient',
     'doctor',
+    'user_profile',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # CORS must be placed here, before CommonMiddleware
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # Third party
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
+
 
 ROOT_URLCONF = 'hospital_management.urls'
 
@@ -97,11 +110,20 @@ WSGI_APPLICATION = 'hospital_management.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='postgresql://hostpital_user:hIxJS0iR1MbGJhY0RSI2tTjpsT3CA5Kb@dpg-d25kvenfte5s7389dh50-a.oregon-postgres.render.com/hostpital',
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -138,16 +160,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS=[
-    BASE_DIR/'static'
+# STATIC CONFIG
+STATIC_URL = '/static/'  # ✅ Always use trailing slash
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',  # Optional: put your custom static files here
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # ✅ Required for collectstatic in production
 
 # media file Configuring
 # Base url to serve media files
+
 MEDIA_URL = '/media/'
-# Path where media is stored'
-# MEDIA_ROOT = BASE_DIR / 'media' # if we want to store inside a app. then we can ignore this line of code.
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type

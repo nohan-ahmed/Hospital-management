@@ -18,5 +18,29 @@ class IsAdminUserOrReadOnly(permissions.BasePermission):
             return True
         
         return True if request.user.is_staff else False
+
+class IsAdminUser(permissions.BasePermission):
+    """Allow access only to admin users."""
+    
+    def has_permission(self, request, view):
+        return request.user and request.user.is_staff
+
+class IsDoctorUser(permissions.BasePermission):
+    """Allow access only to users with doctor role."""
+    
+    def has_permission(self, request, view):
+        return request.user and hasattr(request.user, 'profile') and request.user.profile.role == 'doctor'
+
+class IsPatientUser(permissions.BasePermission):
+    """Allow access only to users with patient role."""
+    
+    def has_permission(self, request, view):
+        return request.user and hasattr(request.user, 'profile') and request.user.profile.role == 'patient'
+
+class IsStaffUser(permissions.BasePermission):
+    """Allow access only to users with staff role."""
+    
+    def has_permission(self, request, view):
+        return request.user and hasattr(request.user, 'profile') and request.user.profile.role == 'staff'
         
         

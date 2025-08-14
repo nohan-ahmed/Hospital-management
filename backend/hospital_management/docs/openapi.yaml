@@ -1,0 +1,260 @@
+openapi: 3.0.0
+info:
+  title: Hospital Management System API
+  description: API documentation for managing hospital operations including users, patients, doctors, appointments, reviews, and services.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api
+    description: Local development server
+  - url: https://your-production-domain.com/api
+    description: Production server
+tags:
+  - name: Users
+    description: Operations related to user registration, login, and profiles
+  - name: Patients
+    description: Endpoints for managing patient information
+  - name: Doctors
+    description: Doctor profiles, specializations, designations, and availability
+  - name: Appointments
+    description: Scheduling and managing appointments
+  - name: Reviews
+    description: Patient reviews for doctors
+  - name: Services
+    description: Hospital services information
+  - name: Contacts
+    description: Contact form submissions
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+      required:
+        - username
+        - email
+    Doctor:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        specialization:
+          type: string
+        designation:
+          type: string
+        available_times:
+          type: array
+          items:
+            type: string
+      required:
+        - name
+        - specialization
+    Patient:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        age:
+          type: integer
+        gender:
+          type: string
+      required:
+        - name
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: integer
+        patient_id:
+          type: integer
+        doctor_id:
+          type: integer
+        scheduled_time:
+          type: string
+          format: date-time
+      required:
+        - patient_id
+        - doctor_id
+        - scheduled_time
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+        patient_id:
+          type: integer
+        doctor_id:
+          type: integer
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        comment:
+          type: string
+      required:
+        - patient_id
+        - doctor_id
+        - rating
+paths:
+  /users/register/:
+    post:
+      tags:
+        - Users
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Bad request
+  /users/login/:
+    post:
+      tags:
+        - Users
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful login, returns JWT token
+        '401':
+          description: Invalid credentials
+  /users/profile/:
+    get:
+      tags:
+        - Users
+      summary: Get logged-in user profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+  /doctors/:
+    get:
+      tags:
+        - Doctors
+      summary: Get list of doctors
+      responses:
+        '200':
+          description: List of doctors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Doctor'
+  /appointments/:
+    post:
+      tags:
+        - Appointments
+      summary: Schedule a new appointment
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Appointment'
+      responses:
+        '201':
+          description: Appointment scheduled successfully
+        '400':
+          description: Bad request
+  /reviews/:
+    post:
+      tags:
+        - Reviews
+      summary: Submit a review for a doctor
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        '201':
+          description: Review submitted successfully
+        '400':
+          description: Bad request
+  /services/:
+    get:
+      tags:
+        - Services
+      summary: List hospital services
+      responses:
+        '200':
+          description: List of services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+  /contacts/:
+    post:
+      tags:
+        - Contacts
+      summary: Submit a contact form
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                message:
+                  type: string
+      responses:
+        '201':
+          description: Contact message submitted successfully

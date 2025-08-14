@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from patient.models import Patient
-from hospital_management.constant import RATINGS
+from hospital_management.constant import RATING_CHOICES
 # Create your models here.
 class Specialisation(models.Model):
     name = models.CharField(max_length=50)
@@ -40,6 +40,8 @@ class Review(models.Model):
     doctor = models.ForeignKey(to=Doctor, on_delete=models.CASCADE, related_name='reviews')
     body = models.TextField()
     created_on = models.DateField(auto_now_add=True)
-    rating = models.CharField(choices=RATINGS, max_length=10)
-    def __str__(self) -> str:
-        return self.rating
+    rating = models.IntegerField(choices=RATING_CHOICES)
+
+    def __str__(self):
+        return f"Review by {self.reviwer} for Dr. {self.doctor} - {self.rating}★"
+

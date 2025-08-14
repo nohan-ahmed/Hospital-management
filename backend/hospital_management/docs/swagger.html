@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Management System API Documentation</title>
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui.css" />
+  <link rel="icon" type="image/png" href="https://unpkg.com/swagger-ui-dist@4.5.0/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://unpkg.com/swagger-ui-dist@4.5.0/favicon-16x16.png" sizes="16x16" />
+  <style>
+    html {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+    
+    body {
+      margin: 0;
+      background: #fafafa;
+    }
+
+    .topbar {
+      background-color: #1b1b1b;
+      padding: 10px 0;
+    }
+
+    .topbar-wrapper {
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .topbar-wrapper img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .topbar-wrapper span {
+      color: white;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .swagger-ui .info .title {
+      color: #3b4151;
+    }
+
+    .swagger-ui .scheme-container {
+      background-color: #f7f7f7;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-wrapper">
+      <span>Hospital Management System API Documentation</span>
+    </div>
+  </div>
+
+  <div id="swagger-ui"></div>
+
+  <script src="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-bundle.js" charset="UTF-8"></script>
+  <script src="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-standalone-preset.js" charset="UTF-8"></script>
+  <script>
+    window.onload = function() {
+      // Begin Swagger UI call region
+      const ui = SwaggerUIBundle({
+        url: "./openapi.yaml",
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout",
+        tagsSorter: "alpha",
+        operationsSorter: "alpha"
+      });
+      // End Swagger UI call region
+
+      window.ui = ui;
+    };
+  </script>
+</body>
+</html>
