@@ -4,253 +4,282 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Registration</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-    <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet"
-        crossorigin="anonymous">
+    <meta name="api-base" content="https://hospital-management-gp1l.onrender.com" />
+    <title>Register - Hospital Management System</title>
+    <!-- Tailwind CSS for modern utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- DaisyUI for beautiful UI components on top of Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom styles -->
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="register.css">
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        accent: '#8b5cf6',
+                        neutral: '#3d4451',
+                        'base-100': '#ffffff',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                },
+            },
+            // In browser environment, DaisyUI is loaded via CDN
+            daisyui: {
+                themes: ["light"],
+            },
+        }
+    </script>
 </head>
 
-<body>
-
-    <!-- Header Section Begin -->
-    <header class="header">
-        <nav class="header__top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-2">
-                        <div class="header__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
-                        </div>
+<body class="min-h-screen bg-gray-50">
+    <!-- Navbar -->
+    <div class="navbar bg-base-100 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto">
+            <div class="navbar-start">
+                <div class="dropdown">
+                    <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h8m-8 6h16" />
+                        </svg>
                     </div>
-                    <div class="col-lg-10">
-                        <div class="header__menu__option">
-                            <nav class="header__menu">
-                                <ul>
-                                    <li class="active"><a href="./index.html">Home</a></li>
-                                    <li><a href="./services.html">Services</a></li>
-                                    <li><a href="./contact.html">Contact Us</a></li>
-                                    <li><a href="./register.html" class="singup">Sing Up</a></li>
-                                    <a href="./login.html" class="btn primary-btn">Login</a>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
+                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><a href="./index.html" class="font-medium">Home</a></li>
+                        <li><a href="./index.html#services" class="font-medium">Services</a></li>
+                        <li><a href="./index.html#contact" class="font-medium">Contact Us</a></li>
+                    </ul>
                 </div>
+                <a href="./index.html" class="flex items-center">
+                    <img src="img/logo.png" alt="Hospital Logo" class="h-10" />
+                    <span class="text-xl font-bold ml-2 text-primary hidden md:inline-block">MediCare</span>
+                </a>
             </div>
-        </nav>
-    </header>
-    <!-- Header Section End -->
+            <div class="navbar-center hidden lg:flex">
+                <ul class="menu menu-horizontal px-1">
+                    <li><a href="./index.html" class="font-medium">Home</a></li>
+                    <li><a href="./index.html#services" class="font-medium">Services</a></li>
+                    <li><a href="./index.html#contact" class="font-medium">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="navbar-end">
+                <a href="./login.html" class="btn btn-primary">Login</a>
+            </div>
+        </div>
+    </div>
 
-    <!-- Main Section Begin -->
-    <main>
-        <section class="" style="background-color: #eee;">
-            <div class="container ">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-lg-12 col-xl-11">
-                        <div class="card text-black" style="border-radius: 25px;">
-                            <div class="card-body p-md-5">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-
-                                        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
-
-                                        <form class="mx-1 mx-md-4" onsubmit="handleRagistration(event)">
-                                            <p class="text-danger p-3 my-4" id="error"></p>
-                                            <div class="d-flex flex-row align-items-center mb-4">
-                                                <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                                <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                    <input type="text" id="username" class="form-control"
-                                                        placeholder="Username" required />
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex flex-row align-items-center mb-4">
-                                                <i class="fa-brands fa-mandalorian fa-lg me-3 fa-fw"></i>
-                                                <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                    <input type="text" id="first_name" class="form-control"
-                                                        placeholder="First Name" required />
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex flex-row align-items-center mb-4">
-                                                <i class="fa-brands fa-mandalorian fa-lg me-3 fa-fw"></i>
-                                                <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                    <input type="text" id="last_name" class="form-control"
-                                                        placeholder="Last Name" required />
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex flex-row align-items-center mb-4">
-                                                <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                                                <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                    <input type="email" id="email" class="form-control"
-                                                        placeholder="Your Email" required />
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex flex-row align-items-center mb-4">
-                                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                                <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                    <input type="password" id="password" class="form-control"
-                                                        placeholder="Password" required />
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex flex-row align-items-center mb-4">
-                                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                                <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                    <input type="password" id="confirm-password" class="form-control"
-                                                        placeholder="Repeat your password" required />
-                                                </div>
-                                            </div>
-
-                                            <div class="form-check d-flex justify-content-center mb-5">
-                                                <input class="form-check-input me-2" type="checkbox" value=""
-                                                    id="form2Example3c" />
-                                                <label class="form-check-label" for="form2Example3">
-                                                    I agree all statements in <a href="#!">Terms of service</a>
-                                                </label>
-                                            </div>
-
-                                            <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                                <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                                                    class="btn btn-primary btn-lg">Register</button>
-                                            </div>
-
-                                        </form>
-
-                                    </div>
-                                    <div
-                                        class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-
-                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                                            class="img-fluid" alt="Sample image">
-
-                                    </div>
+    <!-- Registration Section -->
+    <div class="hero min-h-[80vh] bg-base-100">
+        <div class="hero-content flex-col lg:flex-row w-full max-w-6xl">
+            <div class="text-center lg:text-left lg:w-1/2 px-6 hidden lg:block">
+                <img src="img/docDetails image.png" alt="Healthcare Illustration" class="max-w-md mx-auto" />
+            </div>
+            <div class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100 lg:w-1/2">
+                <div class="card-body">
+                    <h2 class="text-3xl font-bold text-center text-primary mb-6">Create an Account</h2>
+                    <div class="alert alert-error hidden" id="error-message">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span id="error">Error message will appear here</span>
+                    </div>
+                    <form id="registration-form">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Username</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-base-200 px-3">
+                                    <i class="fas fa-user text-gray-500"></i>
+                                </span>
+                                <input type="text" id="username" placeholder="Username" class="input input-bordered w-full" required />
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">First Name</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-base-200 px-3">
+                                        <i class="fas fa-user-circle text-gray-500"></i>
+                                    </span>
+                                    <input type="text" id="first_name" placeholder="First Name" class="input input-bordered w-full" required />
+                                </div>
+                            </div>
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">Last Name</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-base-200 px-3">
+                                        <i class="fas fa-user-circle text-gray-500"></i>
+                                    </span>
+                                    <input type="text" id="last_name" placeholder="Last Name" class="input input-bordered w-full" required />
                                 </div>
                             </div>
                         </div>
+                        <div class="form-control mt-4">
+                            <label class="label">
+                                <span class="label-text">Email</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-base-200 px-3">
+                                    <i class="fas fa-envelope text-gray-500"></i>
+                                </span>
+                                <input type="email" id="email" placeholder="Your Email" class="input input-bordered w-full" required />
+                            </div>
+                        </div>
+                        <div class="form-control mt-4">
+                            <label class="label">
+                                <span class="label-text">Password</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-base-200 px-3">
+                                    <i class="fas fa-lock text-gray-500"></i>
+                                </span>
+                                <input type="password" id="password" placeholder="Password" class="input input-bordered w-full" required />
+                            </div>
+                        </div>
+                        <div class="form-control mt-4">
+                            <label class="label">
+                                <span class="label-text">Confirm Password</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-base-200 px-3">
+                                    <i class="fas fa-key text-gray-500"></i>
+                                </span>
+                                <input type="password" id="confirm-password" placeholder="Repeat your password" class="input input-bordered w-full" required />
+                            </div>
+                        </div>
+                        <div class="form-control mt-6">
+                            <label class="label cursor-pointer justify-start gap-2">
+                                <input type="checkbox" class="checkbox checkbox-primary" id="terms-checkbox" required />
+                                <span class="label-text">I agree to all statements in <a href="#" class="text-primary hover:underline">Terms of Service</a></span>
+                            </label>
+                        </div>
+                        <div class="form-control mt-6">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+                    <div class="divider">OR</div>
+                    <div class="text-center">
+                        <p>Already have an account? <a href="./login.html" class="text-primary hover:underline">Login here</a></p>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
 
-    <!-- Footer Section Begin -->
-    <footer class="footer">
-        <div class="footer__top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4">
-                        <div class="footer__logo">
-                            <img href="#"><img src="img/footer-logo.png" alt=""></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-8">
-                        <div class="footer__newslatter">
-                            <form action="#">
-                                <input type="text" placeholder="Email">
-                                <button type="submit" class="site-btn">Subscribe</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12">
-                        <div class="footer__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-dribbble"></i></a>
-                        </div>
-                    </div>
+    <!-- Footer -->
+    <footer class="footer p-10 bg-neutral text-neutral-content mt-10">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <img src="img/logo.png" alt="Hospital Logo" class="h-12 mb-4" />
+                    <p class="text-base-100">MediCare Hospital Management<br>Providing reliable healthcare since 1992</p>
                 </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <h5>Company</h5>
-                        <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Departments</a></li>
-                            <li><a href="#">Find a Doctor</a></li>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">News</a></li>
-                        </ul>
-                    </div>
+                <div>
+                    <span class="footer-title">Services</span>
+                    <a class="link link-hover">Emergency Care</a>
+                    <a class="link link-hover">Cardiology</a>
+                    <a class="link link-hover">Neurology</a>
+                    <a class="link link-hover">Orthopedics</a>
                 </div>
-                <div class="col-lg-2 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <h5>Quick links</h5>
-                        <ul>
-                            <li><a href="#">Facial Fillers</a></li>
-                            <li><a href="#">Breast Surgery</a></li>
-                            <li><a href="#">Body Lifts</a></li>
-                            <li><a href="#">Face & Neck</a></li>
-                            <li><a href="#">Fat Reduction</a></li>
-                        </ul>
-                    </div>
+                <div>
+                    <span class="footer-title">Company</span>
+                    <a class="link link-hover">About us</a>
+                    <a class="link link-hover">Contact</a>
+                    <a class="link link-hover">Careers</a>
+                    <a class="link link-hover">Press kit</a>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                    <div class="footer__address">
-                        <h5>Contact Us</h5>
-                        <ul>
-                            <li><i class="fa fa-map-marker"></i> Los Angeles Gournadi, 1230 Bariasl</li>
-                            <li><i class="fa fa-phone"></i> 1-677-124-44227</li>
-                            <li><i class="fa fa-envelope"></i> Support@gmail.com</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-12 col-sm-6">
-                    <div class="footer__map">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48158.305462977965!2d-74.13283844036356!3d41.02757295168286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2e440473470d7%3A0xcaf503ca2ee57958!2sSaddle%20River%2C%20NJ%2007458%2C%20USA!5e0!3m2!1sen!2sbd!4v1575917275626!5m2!1sen!2sbd"
-                            height="190" style="border:0" allowfullscreen=""></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer__copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-7">
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        <div class="footer__copyright__text">
-                            <p>Copyright &copy;
-                                <script>document.write(new Date().getFullYear());</script> All rights reserved | This
-                                template is made
-                                with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
-                                    target="_blank">Colorlib</a>
-                            </p>
-                        </div>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </div>
-                    <div class="col-lg-5">
-                        <ul>
-                            <li>All Rights Reserved</li>
-                            <li>Terms & Use</li>
-                            <li>Privacy Policy</li>
-                        </ul>
-                    </div>
+                <div>
+                    <span class="footer-title">Legal</span>
+                    <a class="link link-hover">Terms of use</a>
+                    <a class="link link-hover">Privacy policy</a>
+                    <a class="link link-hover">Cookie policy</a>
                 </div>
             </div>
         </div>
     </footer>
-    <!-- Footer Section End -->
+    <div class="footer footer-center p-4 bg-base-300 text-base-content">
+        <div>
+            <p>Copyright © 2023 - All rights reserved by MediCare Hospital Management</p>
+        </div>
+    </div>
 
-    <!-- Add scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous"
-        defer></script>
-    <script src="register.js"></script>
+    <!-- Scripts -->
+    <script>
+        const BASE_URL = 'https://hospital-management-gp1l.onrender.com';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const registrationForm = document.getElementById('registration-form');
+            const errorMessage = document.getElementById('error-message');
+            const errorText = document.getElementById('error');
+
+            registrationForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const username = document.getElementById('username').value;
+                const firstName = document.getElementById('first_name').value;
+                const lastName = document.getElementById('last_name').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                // Basic validation
+                if (password !== confirmPassword) {
+                    errorText.textContent = 'Passwords do not match';
+                    errorMessage.classList.remove('hidden');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${BASE_URL}/auth/register/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            username,
+                            first_name: firstName,
+                            last_name: lastName,
+                            email,
+                            password
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        // Registration successful, redirect to login page
+                        window.location.href = 'login.html';
+                    } else {
+                        // Show error message
+                        errorText.textContent = data.message || 'Registration failed. Please try again.';
+                        errorMessage.classList.remove('hidden');
+                        console.error('Registration failed:', data);
+                    }
+                } catch (error) {
+                    console.error('Error during registration:', error);
+                    errorText.textContent = 'An error occurred. Please try again later.';
+                    errorMessage.classList.remove('hidden');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -3,18 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hospital management</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css"
-      rel="stylesheet"
-      crossorigin="anonymous"
-    />
+    <meta name="api-base" content="https://hospital-management-gp1l.onrender.com" />
+    <title>Hospital Management System</title>
+    <!-- Tailwind CSS for modern utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- DaisyUI for beautiful UI components on top of Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <!-- Font Awesome for icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -22,391 +17,285 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom styles -->
     <link rel="stylesheet" href="style.css" />
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#3b82f6',
+              secondary: '#10b981',
+              accent: '#8b5cf6',
+              neutral: '#3d4451',
+              'base-100': '#ffffff',
+            },
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            },
+          },
+        },
+        // In browser environment, DaisyUI is loaded via CDN
+        daisyui: {
+          themes: ["light"],
+        },
+      }
+    </script>
   </head>
 
-  <body>
-    <!-- Header Section Begin -->
-    <header class="header">
-      <nav class="header__top">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-2">
-              <div class="header__logo">
-                <a href="./index.html"><img src="img/logo.png" alt="" /></a>
-              </div>
+  <body class="min-h-screen bg-gray-50">
+    <!-- Navbar -->
+    <div class="navbar bg-base-100 shadow-md sticky top-0 z-50">
+      <div class="container mx-auto">
+        <div class="navbar-start">
+          <div class="dropdown">
+            <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
             </div>
-            <div class="col-lg-10">
-              <div class="header__menu__option">
-                <nav class="header__menu">
-                  <ul>
-                    <li class="active"><a href="./index.html">Home</a></li>
-                    <li><a href="./services.html">Services</a></li>
-                    <li><a href="./contact.html">Contact Us</a></li>
-
-                    <!-- Login/Register nav: show only if NOT logged in -->
-                    <li id="nav-login-register">
-                      <a href="./register.html" class="singup">Sign Up</a>
-                      <a href="./login.html" class="btn primary-btn ms-2"
-                        >Login</a
-                      >
-                    </li>
-
-                    <!-- Profile nav: show only if logged in -->
-                    <li id="nav-profile" style="display: none">
-                      <div class="dropdown-center">
-                        <button
-                          class="btn btn-secondary dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                          id="profile-btn"
-                        >
-                          Profile
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li>
-                            <a class="dropdown-item" href="#">My Profile</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#" id="logout-btn"
-                              >Logout</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+              <li><a href="./index.html" class="font-medium">Home</a></li>
+              <li><a href="#services" class="font-medium">Services</a></li>
+              <li><a href="#contact" class="font-medium">Contact Us</a></li>
+            </ul>
           </div>
+          <a href="./index.html" class="flex items-center">
+            <img src="img/logo.png" alt="Hospital Logo" class="h-10" />
+            <span class="text-xl font-bold ml-2 text-primary hidden md:inline-block">MediCare</span>
+          </a>
         </div>
-      </nav>
-
-      <div class="container banner-container">
-        <h4 class="banner-title"><span>Hlw, Mr. </span>Shuvashis</h4>
-        <div class="banner d-flex">
-          <div class="banner-left">
-            <h2>Providing Quality Healthcare</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris at
-              nunc feugiat, pretium quam malesuada, luctus ex. Duis eu dui
-              rhoncus, faucibus diam ac, iaculis urna. Phasellus pellentesque
-              dui in suscipit eleifend.
-            </p>
+        <div class="navbar-center hidden lg:flex">
+          <ul class="menu menu-horizontal px-1">
+            <li><a href="./index.html" class="font-medium">Home</a></li>
+            <li><a href="#services" class="font-medium">Services</a></li>
+            <li><a href="#contact" class="font-medium">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="navbar-end">
+          <!-- Login/Register nav: show only if NOT logged in -->
+          <div id="nav-login-register">
+            <a href="./register.html" class="btn btn-ghost">Sign Up</a>
+            <a href="./login.html" class="btn btn-primary">Login</a>
           </div>
 
-          <div class="banner-right">
-            <img
-              src="img/banner-img.png"
-              alt="banner img"
-              srcset=""
-              class="w-100 h-100"
-            />
+          <!-- Profile nav: show only if logged in -->
+          <div id="nav-profile" style="display: none" class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar" id="profile-btn">
+              <div class="w-10 rounded-full">
+                <img alt="User Avatar" src="./img/profile avatar.png" />
+              </div>
+            </div>
+            <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+              <li><a href="#">My Profile</a></li>
+              <li><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
           </div>
         </div>
       </div>
-    </header>
-    <!-- Header Section End -->
+    </div>
 
-    <!-- Main Section Begin -->
-    <main>
-      <!-- Services Section Begin -->
-      <div class="service container">
-        <div class="service-text">
-          <h2>Services we provide</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar
-            elementum tempus hac tellus libero accumsan.
-          </p>
-        </div>
-
-        <div class="service-section">
-          <div
-            class="swiffy-slider slider-item-show3 slider-item-reveal slider-nav-outside slider-nav-round slider-nav-visible slider-indicators-outside slider-indicators-round slider-indicators-dark slider-nav-animation slider-nav-animation-fadein"
-          >
-            <ul class="slider-container py-4" id="slider-container"></ul>
-
-            <button
-              type="button"
-              class="slider-nav"
-              aria-label="Go left"
-            ></button>
-            <button
-              type="button"
-              class="slider-nav slider-nav-next"
-              aria-label="Go left"
-            ></button>
-
-            <div class="slider-indicators">
-              <button class="" aria-label="Go to slide"></button>
-              <button aria-label="Go to slide" class="active"></button>
-              <button aria-label="Go to slide" class=""></button>
-              <button aria-label="Go to slide" class=""></button>
-              <button aria-label="Go to slide" class=""></button>
-            </div>
+    <!-- Hero Section -->
+    <div class="hero min-h-[70vh] bg-gradient-to-r from-blue-500 to-cyan-500 text-white">
+      <div class="container mx-auto px-4 py-12">
+        <div class="hero-content flex-col lg:flex-row-reverse gap-8">
+          <img src="img/banner-img.png" class="max-w-sm rounded-lg shadow-2xl" alt="Healthcare Illustration" />
+          <div>
+            <h4 class="text-xl font-light mb-2"><span class="font-medium">Hello, </span><span id="user-greeting">Guest</span></h4>
+            <h1 class="text-5xl font-bold">Providing Quality Healthcare</h1>
+            <p class="py-6">Our hospital management system provides comprehensive healthcare solutions with a focus on patient care, efficient administration, and cutting-edge medical services.</p>
+            <button class="btn btn-primary">Get Started</button>
           </div>
         </div>
       </div>
-      <!-- Services Section End -->
+    </div>
 
-      <!-- Doctors Section Begin -->
-      <div class="doctor container">
-        <div class="row">
-          <div class="col-md-3">
-            <h2 class="filter-title">Doctor Filter</h2>
-            <div id="drowpdown">
-              <div class="dropdown w-100 mb-1">
-                <button
-                  class="w-100 btn btn-dropdown dropdown-toggle"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Designation
-                </button>
-                <ul class="dropdown-menu" id="designation"></ul>
-              </div>
-            </div>
+    <!-- Services Section -->
+    <section id="services" class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold mb-2">Our Services</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">We provide a wide range of medical services to meet your healthcare needs with professional care and modern facilities.</p>
+        </div>
 
-            <div id="drowpdown">
-              <div class="dropdown w-100 mb-1">
-                <button
-                  class="w-100 btn btn-dropdown dropdown-toggle"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Specialisation
-                </button>
-                <ul class="dropdown-menu" id="specialisation"></ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-9">
-            <div class="input-group">
-              <input
-                id="serach-box"
-                type="search"
-                class="form-control rounded"
-                placeholder="Search"
-                aria-label="Search"
-                aria-describedby="search-addon"
-              />
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                data-mdb-ripple-init
-                id="search-btn"
-              >
-                search
-              </button>
-            </div>
-
-            <div
-              class="row text-center d-flex align-items-stretch"
-              id="doctors-container"
-            ></div>
-
-            <div class="row" id="no-data">
-              <h2>
-                Doctor Not Found
-                <i class="fa-solid fa-face-sad-tear" style="color: #74c0fc"></i>
-              </h2>
-            </div>
-          </div>
+        <div class="carousel w-full rounded-box">
+          <ul id="slider-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Services will be loaded here dynamically -->
+          </ul>
         </div>
       </div>
-      <!-- Doctors Section End -->
+    </section>
 
-      <!-- Reviews Section Begin -->
-      <section class="reviews container">
-        <div class="row service-text">
-          <h2>Clients Review about us</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar
-            elementum tempus hac tellus libero accumsan.
-          </p>
+    <!-- Doctors Section -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold mb-2">Our Doctors</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">Meet our team of experienced and dedicated healthcare professionals committed to providing you with the best medical care.</p>
         </div>
 
-        <div class="row">
-          <div
-            class="swiffy-slider slider-item-show3 slider-nav-round slider-nav-page"
-          >
-            <ul class="slider-container" id="reviews-container"></ul>
+        <div class="mb-8 flex flex-wrap justify-center gap-4 doctors-filter-container">
+          <!-- Filter buttons will be loaded dynamically -->
+          <button class="btn btn-outline btn-primary" onclick="loadDoctors('', '')">All</button>
+        </div>
 
-            <button
-              type="button"
-              class="slider-nav"
-              aria-label="Go left"
-            ></button>
-            <button
-              type="button"
-              class="slider-nav slider-nav-next"
-              aria-label="Go left"
-            ></button>
+        <div id="no-data" class="text-center hidden">
+          <p class="text-gray-500">No doctors found for this category.</p>
+        </div>
+
+        <div id="doctors-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Doctors will be loaded here dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold mb-2">Patient Testimonials</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">What our patients say about their experience with our healthcare services and medical professionals.</p>
+        </div>
+
+        <div id="testimonials-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Testimonials will be loaded here dynamically -->
+        </div>
+        
+        <div id="no-testimonials" class="text-center hidden">
+          <p class="text-gray-500">No testimonials available at the moment.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold mb-2">Contact Us</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">Have questions or need to schedule an appointment? Reach out to us and our team will get back to you as soon as possible.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+              <h3 class="text-xl font-semibold mb-4">Send Us a Message</h3>
+              <form>
+                <div class="form-control mb-4">
+                  <label class="label">
+                    <span class="label-text">Name</span>
+                  </label>
+                  <input type="text" placeholder="Your Name" class="input input-bordered" />
+                </div>
+                <div class="form-control mb-4">
+                  <label class="label">
+                    <span class="label-text">Email</span>
+                  </label>
+                  <input type="email" placeholder="Your Email" class="input input-bordered" />
+                </div>
+                <div class="form-control mb-4">
+                  <label class="label">
+                    <span class="label-text">Message</span>
+                  </label>
+                  <textarea class="textarea textarea-bordered h-24" placeholder="Your Message"></textarea>
+                </div>
+                <div class="form-control mt-6">
+                  <button class="btn btn-primary">Send Message</button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      </section>
-      <!-- Reviews Section End -->
-    </main>
 
-    <!-- Footer Section Begin -->
-    <footer class="footer">
-      <div class="footer__top">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-4 col-md-4">
-              <div class="footer__logo">
-                <a href="#"><img src="img/footer-logo.png" alt="" /></a>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-8">
-              <div class="footer__newslatter">
-                <form action="#">
-                  <input type="text" placeholder="Email" />
-                  <button type="submit" class="site-btn">Subscribe</button>
-                </form>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-12">
-              <div class="footer__social">
-                <a href="#"><i class="fa fa-facebook"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-                <a href="#"><i class="fa fa-instagram"></i></a>
-                <a href="#"><i class="fa fa-dribbble"></i></a>
+          <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+              <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
+              <div class="space-y-4">
+                <div class="flex items-start">
+                  <div class="bg-primary text-white p-3 rounded-full mr-4">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-medium">Address</h4>
+                    <p class="text-gray-600">123 Medical Center Drive, Healthcare City, HC 12345</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="bg-primary text-white p-3 rounded-full mr-4">
+                    <i class="fas fa-phone"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-medium">Phone</h4>
+                    <p class="text-gray-600">+1 (555) 123-4567</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="bg-primary text-white p-3 rounded-full mr-4">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-medium">Email</h4>
+                    <p class="text-gray-600">info@medicare-hospital.com</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div class="bg-primary text-white p-3 rounded-full mr-4">
+                    <i class="fas fa-clock"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-medium">Hours</h4>
+                    <p class="text-gray-600">Monday - Friday: 8:00 AM - 8:00 PM<br>Saturday: 9:00 AM - 5:00 PM<br>Sunday: Emergency Only</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-2 col-md-3 col-sm-6">
-            <div class="footer__widget">
-              <h5>Company</h5>
-              <ul>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Departments</a></li>
-                <li><a href="#">Find a Doctor</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">News</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-3 col-sm-6">
-            <div class="footer__widget">
-              <h5>Quick links</h5>
-              <ul>
-                <li><a href="#">Facial Fillers</a></li>
-                <li><a href="#">Breast Surgery</a></li>
-                <li><a href="#">Body Lifts</a></li>
-                <li><a href="#">Face & Neck</a></li>
-                <li><a href="#">Fat Reduction</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 col-sm-6">
-            <div class="footer__address">
-              <h5>Contact Us</h5>
-              <ul>
-                <li>
-                  <i class="fa fa-map-marker"></i> Los Angeles Gournadi, 1230
-                  Bariasl
-                </li>
-                <li><i class="fa fa-phone"></i> 1-677-124-44227</li>
-                <li><i class="fa fa-envelope"></i> Support@gmail.com</li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-12 col-sm-6">
-            <div class="footer__map">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48158.305462977965!2d-74.13283844036356!3d41.02757295168286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2e440473470d7%3A0xcaf503ca2ee57958!2sSaddle%20River%2C%20NJ%2007458%2C%20USA!5e0!3m2!1sen!2sbd!4v1575917275626!5m2!1sen!2sbd"
-                height="190"
-                style="border: 0"
-                allowfullscreen=""
-              ></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="footer__copyright">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-7">
-              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-              <div class="footer__copyright__text">
-                <p>
-                  Copyright &copy;
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  All rights reserved | This template is made with
-                  <i class="fa fa-heart" aria-hidden="true"></i> by
-                  <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                </p>
-              </div>
-              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            </div>
-            <div class="col-lg-5">
-              <ul>
-                <li>All Rights Reserved</li>
-                <li>Terms & Use</li>
-                <li>Privacy Policy</li>
-              </ul>
-            </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer p-10 bg-neutral text-neutral-content">
+      <div class="container mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div>
+            <img src="img/logo.png" alt="Hospital Logo" class="h-12 mb-4" />
+            <p class="text-base-100">MediCare Hospital Management<br>Providing reliable healthcare since 1992</p>
+          </div> 
+          <div>
+            <span class="footer-title">Services</span> 
+            <a class="link link-hover">Emergency Care</a> 
+            <a class="link link-hover">Cardiology</a> 
+            <a class="link link-hover">Neurology</a> 
+            <a class="link link-hover">Orthopedics</a>
+          </div> 
+          <div>
+            <span class="footer-title">Company</span> 
+            <a class="link link-hover">About us</a> 
+            <a class="link link-hover">Contact</a> 
+            <a class="link link-hover">Careers</a> 
+            <a class="link link-hover">Press kit</a>
+          </div> 
+          <div>
+            <span class="footer-title">Legal</span> 
+            <a class="link link-hover">Terms of use</a> 
+            <a class="link link-hover">Privacy policy</a> 
+            <a class="link link-hover">Cookie policy</a>
           </div>
         </div>
       </div>
     </footer>
-    <!-- Footer Section End -->
+    <div class="footer footer-center p-4 bg-base-300 text-base-content">
+      <div>
+        <p>Copyright © 2023 - All rights reserved by MediCare Hospital Management</p>
+      </div>
+    </div>
 
-    <!-- Add scripts -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js"
-      crossorigin="anonymous"
-      defer
-    ></script>
-
-    <script>
-      window.addEventListener("DOMContentLoaded", () => {
-        const token = localStorage.getItem("access"); // use your token key here
-
-        const loginRegisterElem = document.getElementById("nav-login-register");
-        const profileElem = document.getElementById("nav-profile");
-        const profileBtn = document.getElementById("profile-btn");
-
-        if (token) {
-          loginRegisterElem.style.display = "none";
-          profileElem.style.display = "block";
-
-          // Optional: display username if saved in localStorage
-          const username = localStorage.getItem("username") || "Profile";
-          profileBtn.textContent = username;
-        } else {
-          loginRegisterElem.style.display = "block";
-          profileElem.style.display = "none";
-        }
-
-        // Logout
-        document.getElementById("logout-btn").addEventListener("click", (e) => {
-          e.preventDefault();
-          localStorage.removeItem("access");
-          localStorage.removeItem("refresh");
-          localStorage.removeItem("username");
-          localStorage.removeItem("user_id");
-          window.location.href = "login.html";
-        });
-      });
-    </script>
-    <script src="app.js"></script>
+    <!-- Scripts -->
+    <!-- Load app.js first to initialize API_BASE and other variables -->
+    <script src="./js/app.js"></script>
+    <script src="./js/login.js"></script>
+    <!-- Authentication and UI updates are handled in app.js -->
   </body>
 </html>

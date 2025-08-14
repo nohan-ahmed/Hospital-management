@@ -1,220 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hospital management</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-  <link href="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/css/swiffy-slider.min.css" rel="stylesheet"
-    crossorigin="anonymous">
+  <meta name="api-base" content="https://hospital-management-gp1l.onrender.com" />
+  <title>Doctor Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.5.0/dist/full.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="docDetails.css">
+  <!-- TokenStore will be accessed from docDetails.js -->
 </head>
 
-<body>
-
-  <!-- Header Section Begin -->
-  <header class="header">
-    <nav class="header__top">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-2">
-            <div class="header__logo">
-              <a href="./index.html"><img src="img/logo.png" alt=""></a>
+<body class="bg-gray-50">
+  <!-- Navbar Section Begin -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
+    <div class="navbar container mx-auto px-4 py-2">
+      <div class="navbar-start">
+        <div class="dropdown">
+          <label tabindex="0" class="btn btn-ghost lg:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+            </svg>
+          </label>
+          <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./index.html#services">Services</a></li>
+            <li><a href="./index.html#contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <a href="./index.html" class="flex items-center">
+          <img src="img/logo.png" alt="Hospital Logo" class="h-10">
+        </a>
+      </div>
+      <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1 text-base font-medium">
+          <li><a href="./index.html" class="hover:text-primary">Home</a></li>
+          <li><a href="./index.html#services" class="hover:text-primary">Services</a></li>
+          <li><a href="./index.html#contact" class="hover:text-primary">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="navbar-end" id="nav-login-register">
+        <a href="./register.html" class="btn btn-ghost btn-sm rounded-btn mr-2 hover:bg-primary hover:text-white">Sign Up</a>
+        <a href="./login.html" class="btn btn-primary btn-sm rounded-btn text-white">Login</a>
+      </div>
+      <div class="navbar-end hidden" id="nav-profile">
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="btn btn-ghost btn-circle avatar" id="profile-btn">
+            <div class="w-10 rounded-full">
+              <img src="img/avatar.png" alt="Profile" />
             </div>
-          </div>
-          <div class="col-lg-10">
-            <div class="header__menu__option">
-              <nav class="header__menu">
-                <ul>
-                  <li class="active"><a href="./index.html">Home</a></li>
-                  <li><a href="./services.html">Services</a></li>
-                  <li><a href="./contact.html">Contact Us</a></li>
-
-                  <!-- Login/Register section -->
-                  <span id="nav-login-register">
-                    <li><a href="./register.html" class="singup">Sign Up</a></li>
-                    <li><a href="./login.html" class="btn primary-btn">Login</a></li>
-                  </span>
-
-                  <!-- Profile section (only visible if logged in) -->
-                  <span id="nav-profile" style="display: none;">
-                    <li><a href="#" id="profile-btn" class="btn btn-info me-2">Profile</a></li>
-                    <li><a href="#" id="logout-btn" class="btn btn-danger">Logout</a></li>
-                  </span>
-                </ul>
-              </nav>
-            </div>
-          </div>
+          </label>
+          <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a>My Profile</a></li>
+            <li><a id="logout-btn">Logout</a></li>
+          </ul>
         </div>
       </div>
-    </nav>
+    </div>
   </header>
-  <!-- Header Section End -->
+  <!-- Navbar Section End -->
 
   <!-- Main Section Begin -->
-  <main>
-    <div class="doc-container container">
-      <div class="row doc-info" id="doc-info">
+  <main class="container mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="doc-info">
+      <!-- Doctor info will be loaded here -->
+    </div>
 
-      </div>
-
-      <div class="row reviews">
-        <h2>RATINGS FROM PATIENTS</h2>
-        <div class="text-center d-flex align-items-stretch" id="doctors-container">
-          <div class="swiffy-slider slider-item-show4 slider-nav-round slider-nav-page">
-            <ul class="slider-container" id="reviews-container">
-
-            </ul>
-
-            <button type="button" class="slider-nav" aria-label="Go left"></button>
-            <button type="button" class="slider-nav slider-nav-next" aria-label="Go left"></button>
-          </div>
-        </div>
+    <div class="mb-12">
+      <h2 class="text-3xl font-bold text-center mb-8 text-primary">Patient Reviews</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="reviews-container">
+        <!-- Reviews will be loaded here -->
       </div>
     </div>
   </main>
-
-  <!-- Modal area start -->
+  <!-- Main Section End -->
 
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Submit your information</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div id="appointment-modal" class="modal">
+    <div class="modal-box max-w-md">
+      <h3 class="font-bold text-lg mb-4">Appointment Information</h3>
+      <form>
+        <div class="form-control mb-4">
+          <label class="label cursor-pointer justify-start gap-2">
+            <input type="radio" name="status" id="physical" value="Physical" class="radio radio-primary" checked>
+            <span class="label-text">Physical</span>
+          </label>
+          <label class="label cursor-pointer justify-start gap-2">
+            <input type="radio" name="status" id="online" value="Online" class="radio radio-primary">
+            <span class="label-text">Online</span>
+          </label>
         </div>
-        <div class="modal-body">
-          <div class="d-flex">
-            <div class="form-check me-2">
-              <input class="form-check-input" type="radio" name="status" id="offline" value="Offline" checked>
-              <label class="form-check-label" for="Offline">Offline</label>
-            </div>
 
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="status" id="online" value="Online" x>
-              <label class="form-check-label" for="online">Online</label>
-            </div>
-          </div>
+        <div class="form-control mb-4">
+          <input type="text" class="input input-bordered w-full" placeholder="Type your symptoms" name="symptom" id="symptom">
+        </div>
 
-          <br>
-
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Type your symptom" name="symptom" id="symptom">
-          </div>
-
-          <select class="form-select form-select-lg mb-3" aria-label="Large select example" id="select_time">
-            <option selected>Available time</option>
+        <div class="form-control mb-4">
+          <select class="select select-bordered w-full" id="select_time">
+            <option disabled selected>Available time</option>
           </select>
-
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+        <div class="modal-action">
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('appointment-modal').classList.remove('modal-open')">Close</button>
           <button type="button" class="btn btn-primary" id="submite-appointment">Submit</button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
   <!-- Footer Section Begin -->
-  <footer class="footer">
-    <div class="footer__top">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-4 col-md-4">
-            <div class="footer__logo">
-              <img href="#"><img src="img/footer-logo.png" alt=""></a>
-            </div>
+  <footer class="bg-gray-900 text-white pt-12 pb-6">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div>
+          <img src="img/footer-logo.png" alt="Hospital Logo" class="h-12 mb-4">
+          <p class="text-gray-400 mb-4">Providing quality healthcare services for you and your family.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
           </div>
-          <div class="col-lg-4 col-md-8">
-            <div class="footer__newslatter">
-              <form action="#">
-                <input type="text" placeholder="Email">
-                <button type="submit" class="site-btn">Subscribe</button>
-              </form>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-12">
-            <div class="footer__social">
-              <a href="#"><i class="fa fa-facebook"></i></a>
-              <a href="#"><i class="fa fa-twitter"></i></a>
-              <a href="#"><i class="fa fa-instagram"></i></a>
-              <a href="#"><i class="fa fa-dribbble"></i></a>
-            </div>
+        </div>
+        
+        <div>
+          <h5 class="font-bold text-lg mb-4">Company</h5>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">About Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Departments</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Find a Doctor</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">FAQ</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">News</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h5 class="font-bold text-lg mb-4">Quick Links</h5>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Facial Fillers</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Breast Surgery</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Body Lifts</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Face & Neck</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Fat Reduction</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h5 class="font-bold text-lg mb-4">Contact Us</h5>
+          <ul class="space-y-2">
+            <li class="flex items-start space-x-3">
+              <i class="fas fa-map-marker-alt mt-1 text-primary"></i>
+              <span class="text-gray-400">Los Angeles Gournadi, 1230 Bariasl</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <i class="fas fa-phone-alt text-primary"></i>
+              <span class="text-gray-400">1-677-124-44227</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <i class="fas fa-envelope text-primary"></i>
+              <span class="text-gray-400">support@hospital.com</span>
+            </li>
+          </ul>
+          
+          <div class="mt-4">
+            <form class="flex">
+              <input type="email" placeholder="Your email" class="px-4 py-2 w-full rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary">
+              <button type="submit" class="bg-primary hover:bg-primary-dark px-4 py-2 rounded-r-md transition-colors duration-300">Subscribe</button>
+            </form>
           </div>
         </div>
       </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-2 col-md-3 col-sm-6">
-          <div class="footer__widget">
-            <h5>Company</h5>
-            <ul>
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Departments</a></li>
-              <li><a href="#">Find a Doctor</a></li>
-              <li><a href="#">FAQ</a></li>
-              <li><a href="#">News</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-3 col-sm-6">
-          <div class="footer__widget">
-            <h5>Quick links</h5>
-            <ul>
-              <li><a href="#">Facial Fillers</a></li>
-              <li><a href="#">Breast Surgery</a></li>
-              <li><a href="#">Body Lifts</a></li>
-              <li><a href="#">Face & Neck</a></li>
-              <li><a href="#">Fat Reduction</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-6">
-          <div class="footer__address">
-            <h5>Contact Us</h5>
-            <ul>
-              <li><i class="fa fa-map-marker"></i> Los Angeles Gournadi, 1230 Bariasl</li>
-              <li><i class="fa fa-phone"></i> 1-677-124-44227</li>
-              <li><i class="fa fa-envelope"></i> Support@gmail.com</li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-12 col-sm-6">
-          <div class="footer__map">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48158.305462977965!2d-74.13283844036356!3d41.02757295168286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2e440473470d7%3A0xcaf503ca2ee57958!2sSaddle%20River%2C%20NJ%2007458%2C%20USA!5e0!3m2!1sen!2sbd!4v1575917275626!5m2!1sen!2sbd"
-              height="190" style="border:0" allowfullscreen=""></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="footer__copyright">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-7">
-            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            <div class="footer__copyright__text">
-              <p>Copyright &copy;
-                <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made
-                with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
-                  target="_blank">Colorlib</a>
-              </p>
-            </div>
-            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-          </div>
-          <div class="col-lg-5">
-            <ul>
-              <li>All Rights Reserved</li>
-              <li>Terms & Use</li>
-              <li>Privacy Policy</li>
-            </ul>
+      
+      <div class="border-t border-gray-800 pt-6">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p class="text-gray-400 text-sm">
+            &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | Hospital Management
+          </p>
+          <div class="flex space-x-6 mt-4 md:mt-0">
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">Privacy Policy</a>
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">Terms of Service</a>
+            <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors duration-300">Cookie Policy</a>
           </div>
         </div>
       </div>
@@ -223,45 +201,15 @@
   <!-- Footer Section End -->
 
   <!-- Add scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiffy-slider@1.6.0/dist/js/swiffy-slider.min.js" crossorigin="anonymous"
-    defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/daisyui@3.5.0/dist/full.js"></script>
 
-        <script>
-      window.addEventListener("DOMContentLoaded", () => {
-        const token = localStorage.getItem("access"); // use your token key here
+  <script>
+    // This script will be replaced by the updateAuthUI function in docDetails.js
+    // The appointment button event listeners are now handled in docDetails.js
+  </script>
 
-        const loginRegisterElem = document.getElementById("nav-login-register");
-        const profileElem = document.getElementById("nav-profile");
-        const profileBtn = document.getElementById("profile-btn");
-
-        if (token) {
-          loginRegisterElem.style.display = "none";
-          profileElem.style.display = "block";
-
-          // Optional: display username if saved in localStorage
-          const username = localStorage.getItem("username") || "Profile";
-          profileBtn.textContent = username;
-        } else {
-          loginRegisterElem.style.display = "block";
-          profileElem.style.display = "none";
-        }
-
-        // Logout
-        document.getElementById("logout-btn").addEventListener("click", (e) => {
-          e.preventDefault();
-          localStorage.removeItem("access");
-          localStorage.removeItem("refresh");
-          localStorage.removeItem("username");
-          localStorage.removeItem("user_id");
-          window.location.href = "login.html";
-        });
-      });
-    </script>
-
-  <script src="docDetails.js"></script>
+  <script src="./js/docDetails.js"></script>
 </body>
 
 </html>
