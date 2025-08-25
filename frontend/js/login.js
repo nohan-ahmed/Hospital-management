@@ -311,7 +311,9 @@ class ApiClient {
   delete(path, opts = {}) { return this.fetch(path, { method: 'DELETE', ...opts }); }
 }
 
-const api = new ApiClient(API_BASE);
+// Define API base URL
+const apiBaseUrl = 'https://hospital-management-gp1l.onrender.com';
+const api = new ApiClient(apiBaseUrl);
 
 /* -------------------------
   Auth flows (login/logout)
@@ -328,7 +330,7 @@ async function login({ username, password }) {
   try {
     // First try the standard login endpoint
     console.log('Trying standard login endpoint');
-    response = await fetch(`${API_BASE}/api/user/login/`, {
+    response = await fetch(`${apiBaseUrl}/api/user/login/`, {
       method: 'POST',
       credentials: 'include', // Changed back to 'include' to allow cross-origin cookies
       headers: { 
@@ -341,7 +343,7 @@ async function login({ username, password }) {
     // If that fails with 404, try the token endpoint
     if (response.status === 404) {
       console.log('Trying alternate login endpoint');
-      response = await fetch(`${API_BASE}/api/token/`, {
+      response = await fetch(`${apiBaseUrl}/api/token/`, {
         method: 'POST',
         credentials: 'include',
         headers: { 
@@ -462,7 +464,7 @@ async function logout() {
       // Try different logout endpoints
       try {
         // First try the user logout endpoint
-        let response = await fetch(`${API_BASE}/api/user/logout/`, {
+        let response = await fetch(`${apiBaseUrl}/api/user/logout/`, {
           method: 'POST',
           credentials: 'include',
           headers: { 
@@ -475,7 +477,7 @@ async function logout() {
         // If that fails with 404, try the token blacklist endpoint
         if (response.status === 404) {
           console.log('Trying alternate logout endpoint');
-          response = await fetch(`${API_BASE}/api/token/blacklist/`, {
+          response = await fetch(`${apiBaseUrl}/api/token/blacklist/`, {
             method: 'POST',
             credentials: 'include',
             headers: { 
@@ -609,7 +611,7 @@ async function testLoginAPI(username, password) {
   try {
     // Try standard endpoint
     console.log('Testing standard login endpoint');
-    let response = await fetch(`${API_BASE}/api/user/login/`, {
+    let response = await fetch(`${apiBaseUrl}/api/user/login/`, {
       method: 'POST',
       credentials: 'include',
       headers: { 
@@ -624,7 +626,7 @@ async function testLoginAPI(username, password) {
     if (response.status === 404) {
       // Try token endpoint
       console.log('Testing token endpoint');
-      response = await fetch(`${API_BASE}/api/token/`, {
+      response = await fetch(`${apiBaseUrl}/api/token/`, {
         method: 'POST',
         credentials: 'include',
         headers: { 
@@ -741,9 +743,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showError(msg) {
     if (!errorEl) return;
-    errorEl.textContent = msg;
+    const errorTextEl = document.getElementById('error-message-text');
+    if (errorTextEl) {
+      errorTextEl.textContent = msg;
+    } else {
+      errorEl.textContent = msg;
+    }
     errorEl.classList.remove('hidden');
+    
+    // Hide info message if it's showing
+    const infoEl = document.getElementById('info-message');
+    if (infoEl) infoEl.classList.add('hidden');
+    
     console.error('Login error message:', msg);
+  }
+  
+  function showInfo(msg) {
+    const infoEl = document.getElementById('info-message');
+    if (!infoEl) return;
+    
+    const infoTextEl = document.getElementById('info-message-text');
+    if (infoTextEl) {
+      infoTextEl.textContent = msg;
+    } else {
+      infoEl.textContent = msg;
+    }
+    infoEl.classList.remove('hidden');
+    
+    // Hide error message if it's showing
+    if (errorEl) errorEl.classList.add('hidden');
+    
+    console.log('Login info message:', msg);
   }
 
   loginForm.addEventListener('submit', async (ev) => {
@@ -766,19 +796,61 @@ document.addEventListener('DOMContentLoaded', () => {
     const submit = document.getElementById('login-submit');
     submit.disabled = true;
     submit.textContent = 'Signing in...';
+    
+    // Show connecting message
+    showInfo('Connecting to server...');
 
     try {
       await login({ username, password });
       console.log('Login successful, redirecting to dashboard');
+      // Show success message briefly before redirect
+      showInfo('Login successful! Redirecting...');
       // Redirect to protected area (index.html)
-      window.location.href = '/index.html';
+      setTimeout(() => {
+        window.location.href = '/index.html';
+      }, 500);
     } catch (err) {
       console.error('Login error', err);
-      const message = err?.data?.detail || err?.message || 'Login failed. Please check your credentials and try again.';
+      
+      // Enhanced error handling with more specific messages
+      let message = 'Login failed. Please check your credentials and try again.';
+      
+      if (err?.status === 401) {
+        message = 'Invalid username or password. Please try again.';
+      } else if (err?.status === 404) {
+        message = 'Login service not available. Please try again later.';
+      } else if (err?.status === 500) {
+        message = 'Server error. Please try again later or contact support.';
+      } else if (err?.data) {
+        // Extract detailed error messages from response
+        if (typeof err.data === 'object') {
+          if (err.data.detail) {
+            message = err.data.detail;
+          } else if (err.data.non_field_errors) {
+            message = Array.isArray(err.data.non_field_errors) 
+              ? err.data.non_field_errors.join('. ') 
+              : err.data.non_field_errors;
+          } else if (err.data.username) {
+            message = Array.isArray(err.data.username) 
+              ? err.data.username.join('. ') 
+              : err.data.username;
+          } else if (err.data.password) {
+            message = Array.isArray(err.data.password) 
+              ? err.data.password.join('. ') 
+              : err.data.password;
+          } else if (err.data.error) {
+            message = err.data.error;
+          }
+        }
+      } else if (err?.message) {
+        message = err.message;
+      }
+      
       showError(message);
+      console.log('Displaying error message to user:', message);
     } finally {
       submit.disabled = false;
-      submit.textContent = 'Sign in';
+      submit.textContent = 'Login';
     }
   });
 });

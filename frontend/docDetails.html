@@ -73,6 +73,39 @@
 
     <div class="mb-12">
       <h2 class="text-3xl font-bold text-center mb-8 text-primary">Patient Reviews</h2>
+      
+      <!-- Add Review Form -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-8" id="review-form-container">
+        <h3 class="text-xl font-semibold mb-4">Write a Review</h3>
+        <form id="review-form" class="space-y-4">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">Rating</span>
+            </label>
+            <div class="flex items-center space-x-2">
+              <div class="rating rating-lg">
+                <input type="radio" name="rating" value="1" class="mask mask-star-2 bg-orange-400" />
+                <input type="radio" name="rating" value="2" class="mask mask-star-2 bg-orange-400" />
+                <input type="radio" name="rating" value="3" class="mask mask-star-2 bg-orange-400" />
+                <input type="radio" name="rating" value="4" class="mask mask-star-2 bg-orange-400" />
+                <input type="radio" name="rating" value="5" class="mask mask-star-2 bg-orange-400" checked />
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text font-medium">Your Review</span>
+            </label>
+            <textarea id="review-text" class="textarea textarea-bordered h-24" placeholder="Share your experience with this doctor"></textarea>
+          </div>
+          
+          <div class="form-control mt-6">
+            <button type="submit" id="submit-review" class="btn btn-primary">Submit Review</button>
+          </div>
+        </form>
+      </div>
+      
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="reviews-container">
         <!-- Reviews will be loaded here -->
       </div>
@@ -87,11 +120,11 @@
       <form>
         <div class="form-control mb-4">
           <label class="label cursor-pointer justify-start gap-2">
-            <input type="radio" name="status" id="physical" value="Physical" class="radio radio-primary" checked>
-            <span class="label-text">Physical</span>
+            <input type="radio" name="status" id="offline" value="Offline" class="radio radio-primary" checked>
+            <span class="label-text">Offline</span>
           </label>
           <label class="label cursor-pointer justify-start gap-2">
-            <input type="radio" name="status" id="online" value="Online" class="radio radio-primary">
+            <input type="radio" name="status" id="Online" value="Online" class="radio radio-primary">
             <span class="label-text">Online</span>
           </label>
         </div>

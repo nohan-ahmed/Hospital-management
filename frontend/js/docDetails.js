@@ -14,6 +14,112 @@ try {
     API_BASE = 'https://hospital-management-gp1l.onrender.com'; // Fallback
 }
 
+// Submit review function
+const submitReview = async (event) => {
+    event.preventDefault();
+    
+    const submitBtn = document.getElementById('submit-review');
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span class="loading loading-spinner loading-sm"></span> Submitting...';
+    submitBtn.disabled = true;
+    
+    // Check if user is authenticated
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+        submitBtn.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>Please log in first`;
+        submitBtn.classList.remove('btn-primary');
+        submitBtn.classList.add('btn-error');
+        
+        // Reset button after 3 seconds
+        setTimeout(() => {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.classList.remove('btn-error');
+            submitBtn.classList.add('btn-primary');
+            submitBtn.disabled = false;
+        }, 3000);
+        return;
+    }
+    
+    // Get form data
+    const rating = document.querySelector('input[name="rating"]:checked').value;
+    const reviewText = document.getElementById('review-text').value;
+    const doctorId = getParams();
+    
+    if (!reviewText.trim()) {
+        submitBtn.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>Review text is required`;
+        submitBtn.classList.remove('btn-primary');
+        submitBtn.classList.add('btn-error');
+        
+        // Reset button after 3 seconds
+        setTimeout(() => {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.classList.remove('btn-error');
+            submitBtn.classList.add('btn-primary');
+            submitBtn.disabled = false;
+        }, 3000);
+        return;
+    }
+    
+    try {
+        // Log the request payload for debugging
+        console.log('Submitting review with payload:', {
+            doctor: doctorId,
+            rating: parseInt(rating),
+            body: reviewText
+        });
+        
+        const response = await fetch(`${API_BASE}/reviews/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                doctor: doctorId,
+                rating: parseInt(rating),
+                body: reviewText
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to submit review');
+        }
+        
+        // Success message
+        submitBtn.innerHTML = `<i class="fas fa-check-circle mr-2"></i>Review submitted`;
+        submitBtn.classList.remove('btn-primary');
+        submitBtn.classList.add('btn-success');
+        
+        // Reset form and reload reviews
+        setTimeout(() => {
+            document.getElementById('review-form').reset();
+            document.querySelector('input[name="rating"][value="5"]').checked = true;
+            document.getElementById('review-text').value = '';
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.classList.remove('btn-success');
+            submitBtn.classList.add('btn-primary');
+            submitBtn.disabled = false;
+            
+            // Reload reviews
+            loadReviews();
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Error submitting review:', error);
+        submitBtn.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>Error: ${error.message}`;
+        submitBtn.classList.remove('btn-primary');
+        submitBtn.classList.add('btn-error');
+        
+        // Reset button after 3 seconds
+        setTimeout(() => {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.classList.remove('btn-error');
+            submitBtn.classList.add('btn-primary');
+            submitBtn.disabled = false;
+        }, 3000);
+    }
+};
+
 const getParams = () => {
     return new URLSearchParams(window.location.search).get('doctorId');
 };
@@ -167,7 +273,7 @@ const generateStarRating = (rating) => {
 };
 
 const getTimes = async (id) => {
-    const res = await fetch(`http://127.0.0.1:8000/available-time/?id=${id}`);
+    const res = await fetch(`${API_BASE}/available-time/?id=${id}`);
     const data = await res.json();
     return data[0]; // Assuming each request returns an array with one item
 };
@@ -177,7 +283,7 @@ const loadTime = async () => {
         const parent = document.getElementById('select_time');
         parent.innerHTML = '<option disabled selected>Loading available times...</option>';
         
-        const res = await fetch(`http://127.0.0.1:8000/doctors/${getParams()}`);
+        const res = await fetch(`${API_BASE}/doctors/${getParams()}`);
         const data = await res.json();
 
         parent.innerHTML = '<option disabled selected>Select Time</option>';
@@ -240,21 +346,20 @@ const appointment = async () => {
             const time = document.getElementById("select_time");
             const selectedTime = time.options[time.selectedIndex];
 
-            const token = localStorage.getItem("access");
+            const token = localStorage.getItem("access_token");
 
             if (!token) {
-                // Create a toast notification for error
-                document.body.insertAdjacentHTML('beforeend', `
-                    <div id="error-toast" class="toast toast-top toast-center">
-                        <div class="alert alert-error">
-                            <i class="fas fa-exclamation-circle mr-2"></i>
-                            <span>Please log in first to book an appointment.</span>
-                        </div>
-                    </div>
-                `);
+                // Show error in the button instead of redirecting
+                submitBtn.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>Please log in first`;
+                submitBtn.classList.remove('btn-primary');
+                submitBtn.classList.add('btn-error');
+                
+                // Reset button after 3 seconds
                 setTimeout(() => {
-                    document.getElementById('error-toast')?.remove();
-                    window.location.href = "login.html";
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.classList.remove('btn-error');
+                    submitBtn.classList.add('btn-primary');
+                    submitBtn.disabled = false;
                 }, 3000);
                 return;
             }
@@ -292,7 +397,7 @@ const appointment = async () => {
             }
 
             const info = {
-                appointment_type: selected?.value || 'Physical',
+                appointment_type: selected?.value || 'online',
                 appointment_status: "Pending",
                 time: selectedTime.value,
                 symptoms: symptom,
@@ -300,7 +405,7 @@ const appointment = async () => {
                 doctor: getParams(),
             };
 
-            const res = await fetch('http://127.0.0.1:8000/appointments/', {
+            const res = await fetch(`${API_BASE}/appointments/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -327,18 +432,18 @@ const appointment = async () => {
                     location.reload();
                 }, 2000);
             } else {
-                // Create a toast notification for error
-                document.body.insertAdjacentHTML('beforeend', `
-                    <div id="error-toast" class="toast toast-top toast-center">
-                        <div class="alert alert-error">
-                            <i class="fas fa-exclamation-circle mr-2"></i>
-                            <span>${data.detail || 'Failed to submit appointment. Please try again.'}</span>
-                        </div>
-                    </div>
-                `);
-                setTimeout(() => document.getElementById('error-toast')?.remove(), 3000);
-                submitBtn.innerHTML = originalBtnText;
-                submitBtn.disabled = false;
+                // Show error in the button instead of toast
+                submitBtn.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i>${data.detail || 'Failed to submit appointment'}`;
+                submitBtn.classList.remove('btn-primary');
+                submitBtn.classList.add('btn-error');
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.classList.remove('btn-error');
+                    submitBtn.classList.add('btn-primary');
+                    submitBtn.disabled = false;
+                }, 3000);
             }
         } catch (error) {
             console.error('Error submitting appointment:', error);
@@ -380,6 +485,12 @@ async function main() {
         await loadTime();
         await appointment();
         
+        // Add event listener for review form submission
+        document.getElementById('review-form').addEventListener('submit', submitReview);
+        
+        // Check authentication status and show/hide review form accordingly
+        updateReviewFormVisibility();
+        
         // Initialize tooltips and other UI components if needed
         document.querySelectorAll('[data-tooltip-target]').forEach(el => {
             // Initialize any custom UI components here
@@ -396,6 +507,27 @@ async function main() {
         `;
     }
 }
+
+// Function to update review form visibility based on authentication status
+const updateReviewFormVisibility = () => {
+    const reviewFormContainer = document.getElementById('review-form-container');
+    const token = localStorage.getItem("access_token");
+    
+    if (token) {
+        // User is authenticated, show the review form
+        reviewFormContainer.style.display = 'block';
+    } else {
+        // User is not authenticated, show login prompt
+        reviewFormContainer.innerHTML = `
+            <div class="alert alert-info shadow-lg">
+                <div>
+                    <i class="fas fa-info-circle"></i>
+                    <span>Please <a href="login.html" class="font-bold underline">login</a> to leave a review.</span>
+                </div>
+            </div>
+        `;
+    }
+};
 
 // Function to check if user is authenticated
 const isAuthenticated = () => {
@@ -422,20 +554,34 @@ const updateAuthUI = () => {
     const appointmentButtons = document.querySelectorAll('.appointment-btn');
     const loginPrompts = document.querySelectorAll('.login-prompt');
     
+    // Update navbar login/register vs profile display
+    const navLoginRegister = document.getElementById('nav-login-register');
+    const navProfile = document.getElementById('nav-profile');
+    
     if (authenticated) {
+        // Show appointment buttons, hide login prompts
         appointmentButtons.forEach(btn => {
             btn.style.display = 'inline-flex';
         });
         loginPrompts.forEach(prompt => {
             prompt.style.display = 'none';
         });
+        
+        // Show profile, hide login/register in navbar
+        if (navLoginRegister) navLoginRegister.classList.add('hidden');
+        if (navProfile) navProfile.classList.remove('hidden');
     } else {
+        // Hide appointment buttons, show login prompts
         appointmentButtons.forEach(btn => {
             btn.style.display = 'none';
         });
         loginPrompts.forEach(prompt => {
             prompt.style.display = 'block';
         });
+        
+        // Hide profile, show login/register in navbar
+        if (navLoginRegister) navLoginRegister.classList.remove('hidden');
+        if (navProfile) navProfile.classList.add('hidden');
     }
 };
 
